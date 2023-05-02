@@ -1,0 +1,86 @@
+   void write(int a[20][20],int r,int c);
+    void add(int a[20][20],int r,int c,int b[20][20]);
+    void sub(int a[20][20],int r,int c,int b[20][20]);
+    void transpose(int a[20][20],int r,int c);
+    int main() {
+    int r1,r2,c2,c1;
+    int a[20][20],b[20][20];
+    printf("\nEnter value of rows of Matrix1: ");
+    scanf("%d",&r1);
+     printf("\nEnter value of columns of Matrix1: ");
+    scanf("%d",&c1);
+     printf("\nEnter value of rows of Matrix2: ");
+    scanf("%d",&r2);
+     printf("\nEnter value of columns of Matrix2: ");
+    scanf("%d",&c2);
+    printf("\nEnter values of Matrix1: ");
+    read(a,r1,c1);
+     printf("\nEnter values of Matrix2: ");
+    read(b,r2,c2);
+    printf("\nMatrix1: \n");
+    write(a,r1,c1);
+    printf("\nMatrix2: \n");
+    write(b,r2,c2);
+    if(r1==r2&&c1==c2)
+    {
+        printf("Adddition of Matrix1 and Matrix2:");
+        add(a,b,r1,c1);
+         printf("Subtraction of Matrix1 and Matrix2:");
+         sub(a,b,r1,c1);
+    }
+    else 
+    printf("\nAddition and Subtaction not possible");
+    printf("\nTranspose of matrix1:\n");
+    transpose(a,r1,c1);
+     printf("\nTranspose of matrix2:\n");
+    transpose(a,r2,c2);
+    return 0;
+}
+void read(int a[20][20],int r,int c)
+{
+    printf("\nEnter %d values",r*c);
+    for(int i=0;i<r;i++)
+    {
+    for(int j=0;j<c;j++)
+    scanf("%d",&a[i][j]);
+    }
+}
+void write(int a[20][20],int r,int c)
+{
+    for(int i=0;i<r;i++)
+    {
+    for(int j=0;j<c;j++)
+    printf("%d",a[i][j]);
+    printf("\n");
+    }  
+}
+void add(int a[20][20],int r,int c ,int b[20][20])
+{
+    int arr[20][20],i,j;
+    for(int i=0;i<r;i++)
+    {
+    for(int j=0;j<c;j++)
+    arr[i][j]=a[i][j]+b[i][j];
+    }
+    write(arr,r,c);
+}
+void sub(int a[20][20],int r,int c ,int b[20][20])
+{
+ int arr[20][20],i,j;
+    for(int i=0;i<r;i++)
+    {
+    for(int j=0;j<c;j++)
+    arr[i][j]=a[i][j]-b[i][j];
+    }
+    write(arr,r,c);
+}
+ void transpose(int a[20][20],int r,int c)
+ {
+  int b[20][20];
+  for(int i=0;i<r;i++)
+    {
+    for(int j=0;j<c;j++)
+    b[i][j]=a[i][j];
+    }
+    write(b,c,r);
+ }
