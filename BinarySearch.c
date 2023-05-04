@@ -33,3 +33,13 @@ int binarysearch(int a[],int beg,int end,int element)
     }
     return -1;
 }
+
+
+//output
+Enter size of array: 4
+3
+2
+4
+5
+Enter size to find 2
+Values found at index 1
