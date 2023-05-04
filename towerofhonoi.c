@@ -20,3 +20,15 @@ void towerofhonoi(char from,char to,char other,int n)
         towerofhonoi('A','C','B',noofdisk);
         
     }
+
+
+//output:
+Enter no. of disks: 3
+Move disk from  A to C
+Move disk from  A to C
+Move disk from  C to B
+Move disk from  A to B
+Move disk from  B to A
+Move disk from  B to A
+Move disk from  A to C
+
