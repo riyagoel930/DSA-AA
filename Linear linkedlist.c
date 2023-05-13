@@ -1,355 +1,310 @@
-//SINGLE LINEAR LINKEDLIST
+//LINKED LIST 
 #include<stdio.h>
-#include<alloc.h>
-#include<conio.h>
-#include<process.h>
+#include<stdlib.h>
 
-//DECLARATION OF STRUCTURE
-typedef struct simplelink 
+//DEFINTION OF STRUCTURE
+typedef struct nodeType
 {
-    int data;
-    struct simplelink *next;
+    int info;
+    struct nodeType *next;
 }node;
 
-//FUN OF CREATE FIRST NODE
-node *create(node *p)
+//Function prototypes
+
+void createEmptyList(node **head);
+void traverseInOrder1(node *head);
+void traverseInReverseOrder2(node *head);
+node *searchInUnsortedList(node *head,int item);
+node *searchInSortedList(node *head,int item);
+void auxilliarySearch(node *head, node **ploc,node **loc, int item);
+void insertAtBeginning(node **head, int item);
+void insertAfterElement(node *head,int item,int after);
+void insertAtEnd(node **head,int item);
+void deleteFromBeginning(node **head);
+void deleteFromEnd(node **head);
+void deleteAfterElement(node *head, int after);
+void reverseList(node **head);
+void deleteList(node **head);
+
+//Main Screen
+void main()
 {
-    p=(node *)malloc(sizeof(node));
+    node *head;
+    int ch,element,after;
+    createEmptyList(&head);
+    while(1)
     {
-        int a;
-        printf("\n\n");
-        node *brr[25];
-        int arr[25];
-        a=0;
-        while(p!=NULL)
-        {
-            //printf("\n\n[%d,%u]-->",p->data,p->next);
-            arr[a]=p->data;
-            brr[a]=p->next;
-            p=p->next;
-            a++;
-        }
-        //printf("NULL");
-        for(int i=(a-1);i>=0;i--)
-        printf("[%d,%u]<--",arr[i],brr[i]);
-        printf("HEAD");
-        printf("\n\n\npress any key to continue......");
-        getch();
+	printf("\nOptions Available are :- \n");
+	printf("\n+++++++++++++++++++++++++\n");
+	printf("\n 1. Insert at Beginning ");
+	printf("\n 2. Insert at End ");
+	printf("\n 3. Insert after a given element ");
+	printf("\n 4. Traverse in order  ");
+	printf("\n 5. Traverse in Reverse order  ");
+	printf("\n 6. Delete from beginning  ");
+	printf("\n 7. Delete from end ");
+	printf("\n 8. Delete after a given element ");
+	printf("\n 9. Reverse linked list ");
+	printf("\n 10. Exit \n\n ");
+	printf("\n Enter your choice(1-10) : ");
+	scanf("%d",&ch);
+	switch(ch)
+	{
+	    case 1: printf("\nEnter element :");
+		    scanf("%d",&element);
+		    insertAtBeginning(&head,element);
+		    break;
+	    case 2: printf("\nEnter element :");
+		    scanf("%d",&element);
+		    insertAtEnd(&head,element);
+		    break;
+	    case 3: printf("\nEnter element : ");
+		    scanf("%d",&element);
+		    printf("\nEnter element after which to insert : ");
+		    scanf("%d",&after);
+		    insertAfterElement(head,element,after);
+		    break;
+	    case 4: if(head == NULL)
+		    printf("\nList is empty.....");
+		    else
+		    traverseInOrder1(head);
+		    printf("\n\nPress any key to continue.....");
+		    getch();
+		    break;
+	    case 5: if(head == NULL)
+		    printf("\nList is empty.........");
+		    else
+		    traverseInReverseOrder2(head);
+		    printf("\n\nPress any key to continue.....");
+		    getch();
+		    break;
+	    case 6: deleteFromBeginning(&head);
+		    break;
+	    case 7: deleteFromEnd(&head);
+		    break;
+	    case 8: printf("\nEnter element after which to delete :");
+		    scanf("%d",&after);
+		    deleteAfterElement(head,after);
+		    break;
+	    case 9: reverseList(&head);
+		    break;
+	    case 10: deleteList(&head);
+		    exit(0);
+	}
+
     }
-    //FUN OF INSERT AT BEGINING
-    node *insert_begin(node *p)
+}
+
+//Creation of list
+void createEmptyList(node **head)
+{
+    *head=NULL;
+}
+
+//Traversing in order
+void traverseInOrder1(node *head)
+{
+    while(head != NULL)
     {
-        node *temp;
-        temp=(node *)malloc (sizeof(node));
-        printf("\nEnter the inserted data: ");
-        scanf("%d",&temp->data);
-        p=temp;
-        return (p);
+	printf("%d\n",head->info);
+	head=head->next;
     }
-    //FUN OF INSERT AT END
-    node *insert_end(node *p)
+}
+
+//Traversing in Reverse Order
+void traverseInReverseOrder2(node *head)
+{
+   node *temp,*ptr;
+   int i,j,count=0;
+   temp=head;
+   while(temp!=0)
+   {
+   count++;
+   temp=temp->next;
+   }
+   for(i=0;i<count;i++)
+   {
+   temp=head;
+   for(j=0;j<count-i-1;j++)
+   temp=temp->next;
+   printf("%d\n",temp->info);
+   }
+   // if(head->next !=NULL)
+  //  {
+    //	traverseInReverseOrder2(head->next);
+    //    printf("%d\n",head->info);
+   // }
+}
+//Search in unsorted
+node *searchInUnsortedList(node *head, int item)
+{
+    while((head!=NULL) && (head->info != item))
     {
-        node *temp,*q;
-        a=p;
-        temp=(node *)malloc(sizeof(node));
-        printf("\nEnter the inserted data: ");
-        scanf("%d",,&temp->data);
-        while(p->next!=NULL)
+	head=head->next;
+    }
+    return NULL;
+}
+
+//search in unsorted
+node *searchInSortedList(node *head, int item)
+{
+    while(head !=NULL)
+    {
+	if(head->info == item)
+	return head;
+	else if(item<head->info)
+	return NULL;
+	else
+	head=head->next;
+    }
+    return NULL;
+}
+ //Auxillary search
+
+void auxilliarySearch(node *head, node **ploc, node **loc, int item)
+{
+    int flag=0;
+    if(head==NULL)
+    *ploc=*loc=NULL;
+    else if(head->info==item)
+    {
+	*ploc=NULL;
+	*loc=head;
+    }
+    else
+    {
+	*ploc=head;
+	*loc=head->next;
+	while((*loc != NULL) && (!flag))
+	{
+	    if((*loc)->info==item)
+	    flag=1;
+	    else
+	    {
+		*ploc=*loc;
+		*loc=(*loc)->next;
+	    }
+	}
+    }
+
+}
+//Insert In Beginning
+void insertAtBeginning(node **head, int item)
+{
+    node *ptr;
+    ptr=(node *)malloc(sizeof(node));
+    ptr->info=item;
+    if(*head==NULL)
+    ptr->next=NULL;
+    else
+    ptr->next=*head;
+    *head=ptr;
+}
+
+//Insert At End
+void insertAtEnd(node **head,int item)
+{
+    node *ptr,*loc;
+    ptr=(node *)malloc(sizeof(node));
+    ptr->info=item;
+    ptr->next=NULL;
+    if(*head==NULL )
+    *head=ptr;
+    else
+    {
+	loc=*head;
+	while(loc->next != NULL)
+	loc=loc->next;
+	loc->next=ptr;
+    }
+}
+
+//Insert after element
+
+void insertAfterElement(node *head, int item, int after)
+{
+    node *ptr,*loc;
+    loc= searchInUnsortedList(head,after);
+    if(loc==(node *)NULL)
+    return;
+    ptr=(node *)malloc(sizeof(node));
+    ptr->info=item;
+    ptr->next=loc->next;
+    loc->next=ptr;
+}
+
+void deleteFromBeginning(node **head)
+{
+    node *ptr;
+    if(*head==NULL)
+    return;
+    else
+    {
+	ptr=*head;
+	*head=(*head)->next;
+	free(ptr);
+    }
+}
+void deleteFromEnd(node **head)
+{
+    node *ptr,*loc;
+    if(*head==NULL)
+    return;
+    else
+    if((*head)->next==(node *)NULL)
+    {
+        ptr=*head;
+        *head=NULL;
+        free(ptr);
+    }
+    else
+    {
+        loc=*head;
+        ptr=(*head)->next;
+        while(ptr->next !=NULL)
         {
-            p=p->next;
+            loc=ptr;
+            ptr=ptr->next;
         }
-        p->next-temp;
-        temp->next=(node *)NULL;
-        return(q);
-        }
-        //FUN OF INSERT AFTER ELEMENT
-        node *insert_after(node *p)
-        {
-            node *temp,*q;
-            int x;
-            q=p;
-            printf("\nEnter the data(after which you enter data: ");
-            scanf("%d",&x);
-            while(p->data!=x)
-            {
-                p=p->next;
-            }
-            temp=(node *)malloc(sizeof(node));
-            printf("\nEnter the inserted data: ");
-            scanf("%d",&temp->data);
-            p->next=temp;
-            return(q);
-            }
-            //FUN OF COUNT THE NO. OF NODES
-            int xount(node *p)
-            {
-                int i=0;
-                while(p!=NULL)
-                {
-                    p=p->next;
-                    i++;
-                    return(i);
-            }
-            //FUN  OF INSERT AT SPECIFIC POSITION
-            node *insert_at_spe_pos(node *p)
-            {
-                node *temp_at_spe_pos(node *p)
-                {
-                    node *temp,*q,*r;
-                    int x,a,i=1;
-                    a=count(p);
-                    q=p;
-                    printf("\nEnter the position(at which you want to enter data: ");
-                    sacnf("%d",&x);
-                    if(x>(a+1))
-                    {
-                        printf("Not able toinsert node at such position: ");
-                        getch();
-                    }
-                    else
-                    {
-                        if(x==1)
-                        {
-                            temp=(node *)malloc(sizeof(node));
-                            printf("\nEnter the insert data: ");
-                            scanf("%d",&temp->data);
-                            temp->next=p;
-                            q=temp;
-                        }
-                        else
-                        {
-                            while(i!=x)
-                            {
-                                r=p;
-                                p=p->next;
-                                i++;
-                            }
-                            temp=(node *)malloc(sizeof(node));
-                            printf("\nEnter the inserted data: ");
-                            scanf("%d",&temp->data);
-                            r->next=temp;
-                        }
-                    }
-                    return(q);
-                }
-                //FUN OF DELETE LAST NODE
-                node *delend(node *p)
-                {
-                    node *q,*r;
-                    r=p;
-                    q=p;
-                    if(p->next=NULL)
-                    {
-                        r=(node *)NULL;
-                    }
-                    else
-                    {
-                        while(p->next!=NULL)
-                        {
-                            q=p;
-                            p=p->next;
-                        }
-                        q->next=(node *)NULL;
-                    }
-                    free(p);
-                    return(r);
-                }
-                //FUN OF DELETE SPECIFIC ELEMENT
-                node *del_speci_ele(node *p)
-                {
-                    node *q,*r;
-                    int x;
-                    q=p;
-                    r=q;
-                    printf("Enter the data toremove: ");
-                    scanf("%d",&x);
-                    while(q->data!=x)
-                    {
-                        r=q;
-                        q=q->next;
-                    }
-                    if(q==r)
-                    p=p->next;
-                    else
-                    r->next=q->next;
-                    free(q);
-                    return(p);
-                }
-                //FUN OFDELETE FIRST node
-                node *delbegin(node *p)
-                {
-                    node *q;
-                    q=p;
-                    p=p->next;
-                    free(q);
-                    return(p);
-                }
-                //FUN OF DELETE NODE AT SPECIFIC POSITION
-                node *delete_at_spe_pos(node *p)
-                {
-                    node *temp,*q,*r;
-                    int x,a,i-1;
-                    a=count(p);
-                    q=p;
-                    printf("\nEnter the position(at which youwanttoremove data: ");
-                    scanf("%d",&x);
-                    if(x>(a))
-                    {
-                        printf("Not able to remove node at such position: ");
-                        getch();
-                    }
-                    else
-                    {
-                        if(x==1)
-                        {
-                            q=q->next;
-                            free(p);
-                        }
-                        else{
-                            while(1!=x)
-                            {
-                                r=p;
-                                p=p->next;
-                                i++;
-                            }
-                            r->next=p->next;
-                            free(p);
-                        }
-                    }
-                    return(q);
-                }
-                //FUN OF REVERSE THE LIST
-                node *reverse(node *p)
-                {
-                    node *q,*r;
-                    q=(node *)NULL;
-                    while(p!=NULL)
-                    {
-                        r=q;
-                        q=p;
-                        p=p->next;
-                        q->next=r;
-                    }
-                    return(q);
-                }
-                //FUN OF MAIN SCREEN
-                void screen(node *dead)
-                {
-                    clscr();
-                    int ch,a;
-                    printf("\t\t\t      SINGLE LINEAR LINKED LIST");
-                    PRINTF("\n\t\t\t************************************");
-                    printf("\n\n  OPTIONS ARE--");
-                    printf("\n~~~~~~~~~~~~~~~~~~~~");
-                    printf("\n\n 0-Exit");
-                    printf("\n\n 1-Create first node");
-                     printf("\n\n 2-Insert at beginning");
-                      printf("\n\n 3-Insert at end");
-                       printf("\n\n 4-Insert after element");
-                        printf("\n\n 5-Insert at specific position");
-                        printf("\n\n 6-Delete at end");
-                     printf("\n\n 7-Delete at begining");
-                      printf("\n\n 8-Delete afterelement");
-                       printf("\n\n 9-Delete specific element");
-                        printf("\n\n 10-Delete element after specific position ");
-                         printf("\n\n 11-Traverse in order(Display)");
-                          printf("\n\n 12-Traverse in reverse order");
-                           printf("\n\n  13-Count no. of node");
-                            printf("\n\n  14-Reversed Linked List");
-                             printf("\n\n  -----------------------------------------------------------------------");
-                              printf("\n\n Enter the choice:");
-                              //printf("\n");
-                              scanf("%d",&ch);
-                              printf("\n-------------------------------------------------------");
-                              switch(ch)
-                              {
-                                  case 0:
-                                  exit(0);
-                                  case 1:
-                                  head=create(head);
-                                  //display(head)
-                                  
-                                  break;
-                                  case 2:
-                                  head=insert_begin(head);
-                                  break;
-                                   case 3:
-                                  head=insert_end(head);
-                                  break; 
-                                  case 4:
-                                  head=insert_after(head);
-                                  break;
-                                   case 5:
-                                  head=insert_at_spe_pos(head);
-                                  break;
-                                   case 6:
-                                  head=delend(head);
-                                  break;
-                                   case 7:
-                                  head=delbegin(head);
-                                  break;
-                                   case 8:
-                                  head=delete_after(head);
-                                  break;
-                                   case 9:
-                                  head=del_speci_ele(head);
-                                  break;
-                                   case 10:
-                                  head=delete_at_spe_pos(head);
-                                  break;
-                                   case 11:
-                                  display(head);
-                                  break;
-                                   case 12:
-                                  revdisplay(head);
-                                  break;
-                                   case 13:
-                                  a=count(head);
-                                  printf("The no. of node in list-:%d",a);
-                                  printf("\n\n\npress any key to continue..........");
-                                  getch();
-                                  break;
-                                  case 14:
-                                  head=reverse(head);
-                                  break;
-                                  default:
-                                  printf("\n\n\nPlease enter the right choice.....");
-                                  getch();
-                                  break;
-                              }
-                              screen(head);
-                }
-                //DECLARATION OF MAIN
-                void main()
-                {
-                    clscr();
-                    node *head;
-                    //int a,ch;
-                    head=(node *)NULL;
-                    screen(head);
-                    getche();
-                }
-                printf("Enter the data: ");
-                scanf("%d",&p->data);
-                p->next=(node *)NULL;
-                return(p);
-            }
-            //FUN OF TRASVERSE IN ORDER
-            void display(node *p)
-            {
-                printf("\n\n");
-                while(p!=NULL)
-                {
-                    printf("[%d,%u]-->",p->data,p->next);
-                    p=p->next;
-                }
-                printf("NULL");
-                printf("\n\n\npress any key to continue......");
-                getch();
-            }
-            
-                }
-            }
-            
-                }
-                               
+        loc->next=NULL;
+        free(ptr);
+    }
+}
+void deleteAfterElement(node *head,int after)
+{
+    node *ptr,*loc;
+    loc=searchInUnsortedList(head,after);
+    if(loc==(node *)NULL)
+    return;
+    ptr=loc->next;
+    loc->next=ptr->next;
+    free(ptr);
+}
+
+void reverseList(node **head)
+{
+    node *previousNode, *currentNode, *nextNode;
+    currentNode=*head;
+    nextNode=currentNode->next;
+    previousNode=NULL;
+    currentNode->next=NULL;
+    while(nextNode !=NULL)
+    {
+        previousNode=currentNode;
+        currentNode=nextNode;
+        nextNode=currentNode->next;
+        currentNode->next=previousNode;
+    }
+    *head=currentNode;
+}
+
+void deleteList(node **head)
+{
+    node *ptr;
+    while(*head !=NULL)
+    {
+        ptr=*head;
+        *head=(*head)->next;
+        free(ptr);
+    }
+}
